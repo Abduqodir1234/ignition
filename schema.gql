@@ -1,0 +1,242 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type User {
+  """User's email"""
+  email: String!
+}
+
+type UserWithId {
+  _id: String!
+
+  """User's email"""
+  email: String!
+}
+
+type TaskComment {
+  """_id"""
+  _id: String!
+
+  """User id"""
+  userId: String!
+
+  """Task id"""
+  taskId: String!
+
+  """Comment Text"""
+  comment: String!
+
+  """when this comment created"""
+  createdAt: DateTime!
+
+  """when this comment updated last time"""
+  updatedAt: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type TaskCommentPopulated {
+  """id"""
+  _id: String!
+
+  """User"""
+  user: User!
+
+  """Task"""
+  task: Task!
+
+  """Comment Text"""
+  comment: String!
+
+  """when this comment created"""
+  createdAt: DateTime!
+
+  """when this comment updated last time"""
+  updatedAt: DateTime!
+}
+
+type Task {
+  """id of document"""
+  _id: String!
+
+  """Task Name"""
+  name: String!
+
+  """Task status"""
+  status: Status!
+
+  """user that task assigned to """
+  assignedTo: String
+
+  """head task id"""
+  headTaskId: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""Task status"""
+enum Status {
+  NOT_STARTED
+  IN_PROGRESS
+  DONE
+}
+
+type TaskPopulated {
+  """id of document"""
+  _id: String!
+
+  """Task Name"""
+  name: String!
+
+  """Task status"""
+  status: Status!
+
+  """user that task assigned to """
+  assignedTo: User
+
+  """head task id"""
+  headTaskId: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type OneTask {
+  """id of document"""
+  _id: String!
+
+  """Task Name"""
+  name: String!
+
+  """Task status"""
+  status: Status!
+
+  """user that task assigned to """
+  assignedTo: User
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  childTasks: [Task!]!
+  comments: [TaskCommentPopulated!]
+}
+
+type Login {
+  """token"""
+  access_token: String!
+}
+
+type Query {
+  task(id: String!): OneTask!
+  userList: [UserWithId!]!
+  user: UserWithId!
+  taskComment(taskCommentInput: TaskCommentIdInput!): TaskCommentPopulated!
+}
+
+input TaskCommentIdInput {
+  id: String!
+}
+
+type Mutation {
+  createTask(createTaskInput: CreateTaskInput!): Task!
+  tasks(taskListQuery: TaskListQuery!): [TaskPopulated!]!
+  updateTask(updateTaskInput: UpdateTaskInput!): Task!
+  deleteTask(deleteTaskInput: TaskDeleteQuery!): Task!
+  registerUser(registerUserInput: RegisterUserInput!): User!
+  login(loginUserInput: LoginInput!): Login!
+  createTaskComment(createTaskCommentInput: CreateTaskCommentInput!): TaskComment!
+  taskComments(taskCommentListInput: TaskCommentListQuery!): [TaskCommentPopulated!]!
+  updateTaskComment(updateTaskCommentInput: UpdateTaskCommentInput!): TaskComment!
+}
+
+input CreateTaskInput {
+  """Task Name"""
+  name: String!
+
+  """Task status"""
+  status: Status
+
+  """user that task assigned to """
+  assignedTo: String
+
+  """head task id"""
+  headTaskId: String
+}
+
+input TaskListQuery {
+  """How many do you want to take"""
+  limit: Float!
+
+  """How many do you want to skip"""
+  offset: Float
+
+  """Task status"""
+  status: Status
+
+  """user that task assigned to """
+  assignedTo: String
+}
+
+input UpdateTaskInput {
+  """id of document"""
+  id: String!
+
+  """Task Name"""
+  name: String
+
+  """Task status"""
+  status: Status
+
+  """User that task assigned to """
+  assignedTo: String
+
+  """head task id"""
+  headTaskId: String
+}
+
+input TaskDeleteQuery {
+  id: String!
+}
+
+input RegisterUserInput {
+  """User's email"""
+  email: String!
+
+  """Password"""
+  password: String!
+}
+
+input LoginInput {
+  """User's email"""
+  email: String!
+
+  """Password"""
+  password: String!
+}
+
+input CreateTaskCommentInput {
+  """Task id"""
+  taskId: String!
+
+  """Comment text"""
+  comment: String!
+}
+
+input TaskCommentListQuery {
+  """How many do you want to take"""
+  limit: Float!
+
+  """How many do you want to skip"""
+  offset: Float
+}
+
+input UpdateTaskCommentInput {
+  id: String!
+
+  """Task id"""
+  taskId: String
+
+  """Comment text"""
+  comment: String
+}
